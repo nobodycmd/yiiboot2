@@ -3,7 +3,7 @@
 return [
     'adminEmail' => 'admin@example.com',
     'adminAcronym' => 'RF',
-    'adminTitle' => 'RageFrame - 商户端',
+    'adminTitle' => 'Rf 商户端',
     'adminDefaultHomePage' => ['main/system'], // 默认主页
     // 登陆后的当前商户信息
     'merchant' => '',

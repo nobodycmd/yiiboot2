@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">基本信息</h3>
+                <h3 class="box-title">清除系统缓存【提醒：请勿随意清除，建议由技术人员进行操作】</h3>
             </div>
             <?php $form = ActiveForm::begin([
                 'fieldConfig' => [
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
             <!-- /.box-body -->
             <div class="box-footer">
                 <div class="col-sm-12 text-center">
-                    <button class="btn btn-primary" type="submit">保存</button>
+                    <button class="btn btn-primary" type="submit">清除系统缓存</button>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
