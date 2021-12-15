@@ -2,7 +2,6 @@
 
 namespace common\models\forms;
 
-use addons\TinyShop\common\components\InitOrderData;
 use addons\TinyShop\common\models\order\Order;
 use common\enums\StatusEnum;
 use Yii;
