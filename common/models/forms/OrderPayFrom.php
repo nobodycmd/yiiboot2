@@ -2,6 +2,9 @@
 
 namespace common\models\forms;
 
+use addons\TinyShop\common\components\InitOrderData;
+use addons\TinyShop\common\models\order\Order;
+use common\enums\StatusEnum;
 use Yii;
 use yii\base\Model;
 use common\interfaces\PayHandler;
@@ -37,13 +40,21 @@ class OrderPayFrom extends Model implements PayHandler
      */
     public function verifyPay($attribute)
     {
-        // TODO 查询订单
-        $this->order = '';
-        if (!$this->order) {
+        //此处依赖了tinyshop里面的订单
+        $order = Order::findOne($this->$attribute);
+
+        if (!$order) {
             $this->addError($attribute, '找不到订单');
 
             return;
         }
+
+        if ($order->pay_status == StatusEnum::ENABLED) {
+            $this->addError($attribute, '订单已支付，请不要重复支付');
+
+            return;
+        }
+        $this->order = $order;
     }
 
     /**
