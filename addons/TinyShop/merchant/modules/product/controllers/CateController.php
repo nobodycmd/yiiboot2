@@ -30,10 +30,10 @@ class CateController extends BaseController
      */
     public function actionIndex()
     {
-        $merchant_id = $this->getMerchantId();
         $models = Cate::find()
             ->orderBy('sort asc, created_at asc')
-            ->where(['merchant_id' => $merchant_id ? $merchant_id : 0])
+            //->andFilterWhere(['merchant_id' => $this->getMerchantId()])
+            ->andWhere(['merchant_id' => $this->getMerchantId() ? $this->getMerchantId() : 0])
             ->asArray()
             ->all();
 
