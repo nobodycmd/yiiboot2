@@ -96,8 +96,11 @@ class ProductController extends BaseController
         $model->tags = !empty($model->tags) ? explode(',', $model->tags) : [];
         $model->covers = unserialize($model->covers);
 
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+        //if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->isAjax ) {
             $data = Yii::$app->request->post();
+            $model->setAttributes($data['ProductForm'], false);
+
             // 开启事务
             $transaction = Yii::$app->db->beginTransaction();
             try {

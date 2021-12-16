@@ -34,6 +34,8 @@ use addons\TinyShop\common\models\order\OrderProduct;
  * @property string $price 商品价格
  * @property string $market_price 市场价格
  * @property string $cost_price 成本价
+ * @property int $is_open_wholesale 是否开启拼团
+ * @property int $wholesale_people 成团人数
  * @property string $wholesale_price 拼团价格
  * @property int $stock 库存量
  * @property int $warning_stock 库存警告
@@ -231,6 +233,8 @@ class Product extends \common\models\base\BaseModel
             'market_price' => '市场价',
             'cost_price' => '成本价',
             'wholesale_price' => '拼团价',
+            'is_open_wholesale' => '开启拼团',
+            'wholesale_people' => '成团人数',
             'stock' => '总库存',
             'warning_stock' => '库存报警',
             'covers' => '幻灯片',

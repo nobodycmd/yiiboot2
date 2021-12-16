@@ -318,8 +318,8 @@ $this->params['breadcrumbs'][] = $this->title;
     // 验证并提交表单
     function beforSubmit() {
         if (submitStatus === false) {
-          // rfWarning('正在提交中...');
-          // return;
+            // rfWarning('正在提交中...');
+            // return;
         }
 
         // 启用
@@ -348,7 +348,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         // 序列化数据
         var data = $('#productForm').serializeArray();
-        // console.log(data);
+        console.log(data);
 
         submitStatus = false;
         $.ajax({
@@ -519,6 +519,7 @@ $this->params['breadcrumbs'][] = $this->title;
         batchText[3] = '成本价 ';
         batchText[4] = '库存 ';
         batchText[5] = '商家编码 ';
+        batchText[6] = '拼团价 ';
 
         $('.js-batch-form').removeClass('hide');
         $('.js-batch-type').addClass('hide');
@@ -569,6 +570,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
         if (batchType === 5) {
             $('.js-code').val(val)
+        }
+
+        if(batchType == 6)
+        {
+            $('.js-wholesale-price').val(val)
         }
 
         $('.js-batch-txt').val('');
@@ -725,7 +731,8 @@ $this->params['breadcrumbs'][] = $this->title;
     // 创建表格底部
     function createTableFoot() {
         let data = [];
-        data['colspan']  = allData.length + 6;
+        //data['colspan']  = allData.length + 6;
+        data['colspan']  = allData.length + 7;
 
         let html = template('foot', data);
         $(".js-spec-table table tfoot").html(html);

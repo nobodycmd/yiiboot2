@@ -18,10 +18,15 @@ use yii\helpers\BaseUrl;
 </div>
 <?= $form->field($model, 'is_stock_visible')->radioList(WhetherEnum::getMap()) ?>
 <?= $form->field($model, 'is_attribute')->radioList([0 => '统一规格', 1 => '多规格'])->hint('启用商品规格后，商品的价格及库存以商品规格为准,库存设置为0则会到”已售罄“中，不会显示'); ?>
+<div class="row">
+    <div class="col-sm-6"><?= $form->field($model, 'is_open_wholesale')->radioList([0 => '不开启', 1 => '开启拼团'])->hint('启用后拼团相关设置将生效，否则无效'); ?></div>
+    <div class="col-sm-6"><?= $form->field($model, 'wholesale_people')->dropDownList(\common\helpers\ArrayHelper::numBetween(2,10)) ?></div>
+</div>
 <div class="row base-attribute <?php if ($model->is_attribute == 1){ ?>hide<?php } ?>">
-    <div class="col-sm-4"><?= $form->field($model, 'price')->textInput(); ?></div>
-    <div class="col-sm-4"><?= $form->field($model, 'market_price')->textInput(); ?></div>
-    <div class="col-sm-4"><?= $form->field($model, 'cost_price')->textInput(); ?></div>
+    <div class="col-sm-3"><?= $form->field($model, 'price')->textInput(); ?></div>
+    <div class="col-sm-3"><?= $form->field($model, 'market_price')->textInput(); ?></div>
+    <div class="col-sm-3"><?= $form->field($model, 'cost_price')->textInput(); ?></div>
+    <div class="col-sm-3"><?= $form->field($model, 'wholesale_price')->textInput(); ?></div>
 </div>
 <div class="attribute <?php if ($model->is_attribute == 0){ ?>hide<?php } ?>">
     <?= $form->field($model, 'base_attribute_id')->dropDownList(\common\helpers\ArrayHelper::merge(['0' => '请选择'], $baseAttribute)); ?>
@@ -107,17 +112,17 @@ use yii\helpers\BaseUrl;
         <td>{{value.title}}</td>
         <td>
             {{if value.type == 1}}
-                <input type="text" value="{{value.value}}" class="form-control" name="attributeValue[{{value.id}}]">
+            <input type="text" value="{{value.value}}" class="form-control" name="attributeValue[{{value.id}}]">
             {{else if value.type == 2}}
-                <div role="radiogroup">
-                    {{each value.config as item i}}
-                    <label><input type="radio" name="attributeValue[{{value.id}}]" value="{{item}}" {{if i == 0}}checked="checked"{{/if}}> {{item}}</label>
-                    {{/each}}
-                </div>
-            {{else}}
+            <div role="radiogroup">
                 {{each value.config as item i}}
-                    <label><input type="checkbox" name="attributeValue[{{value.id}}][]" value="{{item}}"> {{item}}</label>
+                <label><input type="radio" name="attributeValue[{{value.id}}]" value="{{item}}" {{if i == 0}}checked="checked"{{/if}}> {{item}}</label>
                 {{/each}}
+            </div>
+            {{else}}
+            {{each value.config as item i}}
+            <label><input type="checkbox" name="attributeValue[{{value.id}}][]" value="{{item}}"> {{item}}</label>
+            {{/each}}
             {{/if}}
         </td>
     </tr>
@@ -133,13 +138,13 @@ use yii\helpers\BaseUrl;
         <td>{{val.title}}</td>
         <td>
             {{each val.value as item i}}
-                <span id="option-{{item.id}}" data-type="{{val.show_type}}" class="btn btn-white btn-sm" data-id="{{item.id}}" data-title="{{item.title}}" data-pid="{{val.id}}" data-ptitle="{{val.title}}" data-sort="{{item.sort}}">{{item.title}}</span>
+            <span id="option-{{item.id}}" data-type="{{val.show_type}}" class="btn btn-white btn-sm" data-id="{{item.id}}" data-title="{{item.title}}" data-pid="{{val.id}}" data-ptitle="{{val.title}}" data-sort="{{item.sort}}">{{item.title}}</span>
             {{if val.show_type == 2}}
-                <span class="btn btn-sm selectColor" style="background:#000000;padding: 10px" data-href="<?= Url::to(['select-color'])?>"></span>
-                <?= Html::hiddenInput('specValueFieldData[{{item.id}}]', '')?>
+            <span class="btn btn-sm selectColor" style="background:#000000;padding: 10px" data-href="<?= Url::to(['select-color'])?>"></span>
+            <?= Html::hiddenInput('specValueFieldData[{{item.id}}]', '')?>
             {{else if val.show_type == 3}}
-                <img src="<?= AddonHelper::file('img/sku-add.png'); ?>" class="selectImage" href="<?= BaseUrl::to(['/file/selector', 'boxId' => 'tinyshop', 'upload_type' => 'images'])?>" data-toggle='modal' data-target='#ajaxModalMax'>
-                <?= Html::hiddenInput('specValueFieldData[{{item.id}}]', '')?>
+            <img src="<?= AddonHelper::file('img/sku-add.png'); ?>" class="selectImage" href="<?= BaseUrl::to(['/file/selector', 'boxId' => 'tinyshop', 'upload_type' => 'images'])?>" data-toggle='modal' data-target='#ajaxModalMax'>
+            <?= Html::hiddenInput('specValueFieldData[{{item.id}}]', '')?>
             {{/if}}
             {{/each}}
             <a href="#" class="specValue blue" data-show_type="{{val.show_type}}" data-pid="{{val.id}}" data-ptitle="{{val.title}}" data-toggle="modal" data-target="#specValue">+ 规格值</a>
@@ -164,6 +169,7 @@ use yii\helpers\BaseUrl;
         <th class="th-price">成本价（元）</th>
         <th class="th-stock">库存</th>
         <th class="th-code">商家编码</th>
+        <th class="th-price">拼团价（元）</th>
         <th class="th-status">启用状态</th>
     </tr>
 </script>
@@ -184,6 +190,7 @@ use yii\helpers\BaseUrl;
         <td><input type="text" name="skus[{{value.sku}}][cost_price]" maxlength="10" class="js-cost-price form-control" value="0"></td>
         <td><input type="text" name="skus[{{value.sku}}][stock]" maxlength="10" class="js-stock-num form-control" value="0"></td>
         <td><input type="text" name="skus[{{value.sku}}][code]" maxlength="10" class="js-code form-control" value="0"></td>
+        <td><input type="text" name="skus[{{value.sku}}][wholesale_price]" class="js-wholesale-price form-control" maxlength="10" value="0"></td>
         <td>
             <select class="js-status form-control" name="skus[{{value.sku}}][status]" aria-invalid="false">
                 <option value="0">禁用</option>
@@ -208,6 +215,7 @@ use yii\helpers\BaseUrl;
                     <a class="js-batch-cost_price blue" href="javascript:void (0);" onclick="batch(3)">成本价</a>
                     <a class="js-batch-stock blue" href="javascript:void (0);" onclick="batch(4)">库存</a>
                     <a class="js-batch-merchant-code blue" href="javascript:void (0);" onclick="batch(5)">商家编码</a>
+                    <a class="js-batch-wholesale_price blue" href="javascript:void (0);" onclick="batch(6)">拼团价</a>
                 </span>
                 <span class="js-batch-form input-group hide">
                     <input type="text" maxlength="11" class="js-batch-txt form-control input-sm" style="width:130px;">
@@ -247,7 +255,7 @@ use yii\helpers\BaseUrl;
             <div class="modal-body">
                 <input type="text" class="form-control m-b" id="specTitle" placeholder="请填写规格" />
                 <?= Html::radioList('show_type', 1, \addons\TinyShop\common\models\base\Spec::$showTypeExplain, [
-                        'class' => 'specShowType'
+                    'class' => 'specShowType'
                 ])?>
             </div>
             <div class="modal-footer">

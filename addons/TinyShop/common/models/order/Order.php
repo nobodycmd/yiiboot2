@@ -20,6 +20,7 @@ use common\traits\HasOneMerchant;
  * @property string $order_sn 订单编号
  * @property string $out_trade_no 外部交易号
  * @property int $order_type 订单类型
+ * @property int $wholesale_id 拼团id
  * @property int $payment_type 支付类型。取值范围： WEIXIN (微信自有支付)  WEIXIN_DAIXIAO (微信代销支付)  ALIPAY (支付宝支付)
  * @property int $shipping_type 订单配送方式
  * @property string $order_from 订单来源

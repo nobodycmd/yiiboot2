@@ -537,6 +537,7 @@ class ProductForm extends \addons\TinyShop\common\models\product\Product
             'price',
             'market_price',
             'cost_price',
+            'wholesale_price',
             'stock',
             'code',
             'status',
