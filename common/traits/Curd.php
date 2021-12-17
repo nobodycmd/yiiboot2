@@ -58,9 +58,21 @@ trait Curd
     {
         $id = Yii::$app->request->get('id', null);
         $model = $this->findModel($id);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->referrer();
+
+        //粗放式代码
+        $data = Yii::$app->request->post();
+        $scope = $model->formName();
+        if (isset($data[$scope])) {
+            $model->setAttributes($data[$scope], false);
+            if ($model->save()) {
+                return $this->referrer();
+            }
         }
+
+//        安全版本代码
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->referrer();
+//        }
 
         return $this->render($this->action->id, [
             'model' => $model,

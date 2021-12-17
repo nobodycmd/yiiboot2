@@ -40,8 +40,8 @@ class ModelController extends BaseController
                 FileHelper::mkdirs($path);
             }
 
-            $g = Yii::createObject(\common\components\gii\model\Generator::class);
             foreach ($model->tables as $table) {
+                $g = Yii::createObject(\common\components\gii\model\Generator::class);
                 $g->ns = 'addons\\' . $model->addon . '\\common\\models';
                 $g->tableName = $table;
                 $g->standardizeCapitals = true;
@@ -55,7 +55,7 @@ class ModelController extends BaseController
                 }
             }
 
-            return $this->message(implode('\r\n', $aryMsg), $this->redirect(['index']));
+            return $this->message(implode('<br/>', $aryMsg), $this->redirect(['index']));
         }
 
         return $this->render($this->action->id, [
