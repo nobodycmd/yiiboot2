@@ -14,7 +14,7 @@ $this->title = '文章列表';
             <ol class="breadcrumb w_breadcrumb">
                 <li><a href="<?= Url::to(['index/index'])?>">首页</a></li>
                 <li class="active">文章</li>
-                <span class="w_navbar_tip">RageFrame，一个基于Yii2高级框架的快速开发应用引擎。</span>
+                <span class="w_navbar_tip">yiiboot2，一个基于Yii2高级框架的快速开发应用引擎。</span>
             </ol>
             <div class="col-lg-9 col-md-9 w_main_left">
                 <div class="panel panel-default">

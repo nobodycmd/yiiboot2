@@ -301,8 +301,13 @@ class SearchModel extends Model
         }
 
         $this->load($params);
-        foreach ($this->attributes as $name => $value) {
-            $this->addCondition($query, $name, in_array($name, $this->partialMatchAttributes));
+        //其他没有formname的参数进行复制
+        $this->setAttributes($params, true);
+
+        if($this->attributes) {
+            foreach ($this->attributes as $name => $value) {
+                $this->addCondition($query, $name, in_array($name, $this->partialMatchAttributes));
+            }
         }
 
         return $dataProvider;

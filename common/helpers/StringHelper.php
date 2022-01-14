@@ -46,6 +46,7 @@ class StringHelper extends BaseStringHelper
                 break;
             // php自带的唯一id
             case  'uniqid' :
+            default:
                 return md5(uniqid(md5(microtime(true) . self::random(8)), true));
 
                 break;

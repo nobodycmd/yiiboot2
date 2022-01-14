@@ -92,7 +92,12 @@ class m200529_160733_addon_shop_product extends Migration
             'updated_at' => "int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间'",
             'PRIMARY KEY (`id`)'
         ], "ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='扩展_微商城_商品表'");
-        
+
+        //后续新增
+        //拼团
+        $this->addColumn('{{%addon_shop_product}}','is_open_wholesale','int default 0 comment "是否开启拼团"');
+        $this->addColumn('{{%addon_shop_product}}','wholesale_people','int default 2 comment "成团人数"');
+
         /* 索引设置 */
         $this->createIndex('price','{{%addon_shop_product}}','price',0);
         $this->createIndex('cate_id','{{%addon_shop_product}}','cate_id',0);

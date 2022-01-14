@@ -15,7 +15,7 @@ $this->title = '我的博客';
                 <div class="panel panel-default contenttop">
                     <a href="javascript:void (0)">
                         <strong>置顶</strong>
-                        <h3 class="title">RageFrame</h3>
+                        <h3 class="title">yiiboot2</h3>
                         <p class="overView">为二次开发而生，让开发变得更简单</p>
                     </a>
                 </div>

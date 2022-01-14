@@ -19,101 +19,8 @@ class m200529_160732_addon_shop_order extends Migration
             'order_type' => "tinyint(4) NULL DEFAULT '1' COMMENT '订单类型'",
             'wholesale_id' => "int(10) unsigned NULL DEFAULT '0' COMMENT '拼团id'",
             'payment_type' => "tinyint(4) NULL DEFAULT '0' COMMENT '支付类型。取值范围：
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 WEIXIN (微信自有支付)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 WEIXIN_DAIXIAO (微信代销支付)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ALIPAY (支付宝支付)'",
             'shipping_type' => "tinyint(4) NULL DEFAULT '1' COMMENT '订单配送方式'",
             'order_from' => "varchar(200) NULL DEFAULT '' COMMENT '订单来源'",
@@ -184,7 +91,13 @@ ALIPAY (支付宝支付)'",
             'updated_at' => "int(10) NULL DEFAULT '0'",
             'PRIMARY KEY (`id`)'
         ], "ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='扩展_微商城_订单表'");
-        
+
+        //核销
+        $this->addColumn('{{%addon_shop_order}}','hexiaoma','char(32) default "" comment "核销码，一般针对线下自提或者到店消费"');
+        $this->addColumn('{{%addon_shop_order}}','hexiaoma_used','int default 0 comment "核销码被使用"');
+        $this->addColumn('{{%addon_shop_order}}','hexiaoma_used_time','int default 0 comment "核销码被使用时间"');
+
+
         /* 索引设置 */
         $this->createIndex('UK_ns_order_buyer_id','{{%addon_shop_order}}','buyer_id',0);
         $this->createIndex('UK_ns_order_order_no','{{%addon_shop_order}}','order_sn',0);

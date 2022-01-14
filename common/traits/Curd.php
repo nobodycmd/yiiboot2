@@ -59,17 +59,19 @@ trait Curd
         $id = Yii::$app->request->get('id', null);
         $model = $this->findModel($id);
 
-        //粗放式代码
+
         $data = Yii::$app->request->post();
         $scope = $model->formName();
         if (isset($data[$scope])) {
+            //充分赋值
             $model->setAttributes($data[$scope], false);
+            //默认进行规则验证
             if ($model->save()) {
                 return $this->referrer();
             }
         }
 
-//        安全版本代码
+//        保守赋值
 //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 //            return $this->referrer();
 //        }
