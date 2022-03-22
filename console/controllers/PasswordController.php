@@ -24,8 +24,8 @@ class PasswordController extends Controller
     public function actionInit()
     {
         if ($model = Member::findOne(1)) {
-            $password_hash = StringHelper::random(10);
-            $model->username = StringHelper::random(5);
+            $model->username = 'admin';
+            $password_hash = '123456';
             $model->password_hash = Yii::$app->security->generatePasswordHash($password_hash);
 
             if ($model->save()) {
