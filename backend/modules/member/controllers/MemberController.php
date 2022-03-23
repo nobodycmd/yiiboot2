@@ -9,6 +9,7 @@ use common\models\member\Member;
 use common\enums\StatusEnum;
 use backend\controllers\BaseController;
 use backend\modules\member\forms\RechargeForm;
+use yii\data\ActiveDataProvider;
 
 /**
  * 会员管理
@@ -145,4 +146,33 @@ class MemberController extends BaseController
             'rechargeForm' => $rechargeForm,
         ]);
     }
+
+
+    /**
+     * 查看下级用户
+     *
+     * @return mixed|string|\yii\web\Response
+     * @throws \yii\base\Exception
+     * @throws \yii\base\ExitException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionTree()
+    {
+        $id = Yii::$app->request->get('id');
+
+        $query = $this->modelClass::find()->where([
+            'pid' => $id,
+        ]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false
+        ]);
+
+        return $this->renderAjax($this->action->id, [
+            'dataProvider' => $dataProvider
+        ]);
+
+    }
+
 }
