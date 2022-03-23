@@ -160,14 +160,25 @@ class MemberController extends BaseController
     {
         $id = Yii::$app->request->get('id');
 
-        $query = $this->modelClass::find()->where([
-            'pid' => $id,
+        $searchModel = new SearchModel([
+            'model' => $this->modelClass,
+            'scenario' => 'default',
+            'partialMatchAttributes' => ['realname', 'mobile'], // 模糊查询
+            'defaultOrder' => [
+                'id' => SORT_DESC
+            ],
+            'pageSize' => 50
         ]);
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => false
-        ]);
+        $dataProvider = $searchModel
+            ->search(Yii::$app->request->queryParams);
+        $dataProvider->query
+            ->andWhere(['>=', 'status', StatusEnum::DISABLED])
+            ->andFilterWhere(['merchant_id' => $this->getMerchantId()])
+            ->andWhere([
+                'pid' => $id,
+            ])
+            ->with(['account', 'memberLevel']);
 
         return $this->renderAjax($this->action->id, [
             'dataProvider' => $dataProvider
