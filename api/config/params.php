@@ -7,11 +7,11 @@ return [
 
     /** ------ token相关 ------ **/
     // token有效期是否验证 默认不验证
-    'user.accessTokenValidity' => true,
+    'user.accessTokenValidity' => false,
     // token有效期 默认 2 小时
     'user.accessTokenExpire' => 2 * 60 * 60,
     // refresh token有效期是否验证 默认开启验证
-    'user.refreshTokenValidity' => true,
+    'user.refreshTokenValidity' => false,
     // refresh token有效期 默认30天
     'user.refreshTokenExpire' => 30 * 24 * 60 * 60,
     // 签名验证默认关闭验证，如果开启需了解签名生成及验证
