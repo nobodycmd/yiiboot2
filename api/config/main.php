@@ -58,7 +58,7 @@ return [
             // 否则认为是无效路由。
             // 这个选项仅在 enablePrettyUrl 启用后才有效。启用容易出错
             // 注意:如果不需要严格解析路由请直接删除或注释此行代码
-            'enableStrictParsing' => true,
+            //'enableStrictParsing' => true,//必须注释掉，不然坑死人
             // 是否在URL中显示入口脚本。是对美化功能的进一步补充。
             'showScriptName' => false,
             // 指定续接在URL后面的一个后缀，如 .html 之类的。仅在 enablePrettyUrl 启用时有效。
