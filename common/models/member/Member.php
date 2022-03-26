@@ -62,6 +62,14 @@ class Member extends User
     }
 
     /**
+     * 直推模式
+     * @return array|ActiveRecord[]
+     */
+    public function getChildrenMember(){
+        return Member::find()->where(['like', 'tree', $this->tree . TreeHelper::prefixTreeKey($this->id) . '%', false])->with('account')->all();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function rules()
