@@ -69,6 +69,11 @@ class Member extends User
         return Member::find()->where(['like', 'tree', $this->tree . TreeHelper::prefixTreeKey($this->id) . '%', false])->with('account')->all();
     }
 
+    public function getMemberLine(){
+        return Member::find()->where(['like', 'tree',  TreeHelper::prefixTreeKey($this->id) . '%', false])
+            ->with('account')->all();
+    }
+
     /**
      * {@inheritdoc}
      */
