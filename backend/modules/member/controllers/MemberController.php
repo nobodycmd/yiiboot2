@@ -175,9 +175,8 @@ class MemberController extends BaseController
         $dataProvider->query
             ->andWhere(['>=', 'status', StatusEnum::DISABLED])
             ->andFilterWhere(['merchant_id' => $this->getMerchantId()])
-            ->andWhere([
-                'pid' => $id,
-            ])
+            ->andWhere(
+                ['like', 'tree', $this->tree . TreeHelper::prefixTreeKey($id) . '%', false])
             ->with(['account', 'memberLevel']);
 
         return $this->renderAjax($this->action->id, [
