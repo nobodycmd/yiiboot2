@@ -59,6 +59,17 @@ class AuthRoleService extends Service
                 ->andFilterWhere(['merchant_id' => $merchant_id])
                 ->asArray()
                 ->one();
+            
+            //全部重置为默认角色(即第一个）
+            //统一总后台分配
+            if($merchant_id
+                && isset(Yii::$app->params['merchant_universal_default_role'])
+                && Yii::$app->params['merchant_universal_default_role']
+            ){
+                $this->roles = AuthRole::find()->orderBy('id')->limit(1)
+                    ->asArray()
+                    ->one();
+            }
 
             if (!$this->roles) {
                 throw new UnauthorizedHttpException('授权的角色已失效，请联系管理员');
