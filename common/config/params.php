@@ -1,5 +1,6 @@
 <?php
 return [
+    'merchant_universal_default_role' => true,//商户统一使用默认角色进行权限验证
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
