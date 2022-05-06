@@ -2,6 +2,8 @@
 
 namespace api\controllers;
 
+use common\models\member\Account;
+use common\models\member\Member;
 use Yii;
 use yii\filters\Cors;
 use yii\filters\RateLimiter;
@@ -30,6 +32,19 @@ class ActiveController extends \yii\rest\ActiveController
      * @var array
      */
     protected $pageParam = [];
+    /**
+     * @var \common\models\api\AccessToken
+     */
+    protected $identity = false;
+    /**
+     * @var Member
+     */
+    protected $loginMember = false;
+    /**
+     * @var Account
+     */
+    protected $loginAccount = false;
+
 
     use BaseAction;
 
@@ -161,6 +176,15 @@ class ActiveController extends \yii\rest\ActiveController
         $this->pageSize > 50 && $this->pageSize = 50;
 
         $this->pageParam = ArrayHelper::merge(Yii::$app->request->get(),Yii::$app->request->post());
+
+        //直接记录下当前登录用户，免得每次写，空间换工作效率
+        if(\Yii::$app->user->identity){
+            $this->identity = \Yii::$app->user->identity;
+            $this->loginMember = Member::findOne($this->identity->member_id);
+            $this->loginAccount = Account::findOne([
+                'member_id' => $this->identity->member_id,
+            ]);
+        }
 
         return true;
     }
