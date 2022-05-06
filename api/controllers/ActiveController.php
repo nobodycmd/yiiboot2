@@ -164,4 +164,20 @@ class ActiveController extends \yii\rest\ActiveController
 
         return true;
     }
+
+    /**
+     * 获取页面参数
+     * @param string $name
+     * @param false $default
+     * @return array|false|mixed
+     */
+    public function getPageParam($name='',$default=false){
+        if($name == false){
+            return $this->pageParam;
+        }
+        if(isset($this->pageParam[$name])){
+            return $this->pageParam[$name];
+        }
+        return $default;
+    }
 }
