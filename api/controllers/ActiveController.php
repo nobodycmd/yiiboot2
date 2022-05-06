@@ -10,6 +10,7 @@ use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\HttpHeaderAuth;
 use yii\filters\auth\QueryParamAuth;
+use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use common\traits\BaseAction;
 use common\behaviors\ActionLogBehavior;
@@ -18,10 +19,18 @@ use common\behaviors\HttpSignAuth;
 /**
  * Class ActiveController
  * @package api\controllers
- * @author Rf <1458015476@qq.com>
+ * @author
  */
 class ActiveController extends \yii\rest\ActiveController
 {
+    /**
+     * 页面提交参数
+     * get post 一起存储
+     *
+     * @var array
+     */
+    protected $pageParam = [];
+
     use BaseAction;
 
     /**
@@ -59,6 +68,7 @@ class ActiveController extends \yii\rest\ActiveController
             ];
         }
 
+
         $behaviors['authenticator'] = [
             'class' => CompositeAuth::class,
             'authMethods' => [
@@ -79,15 +89,15 @@ class ActiveController extends \yii\rest\ActiveController
                  * header格式: x-api-key: access-token
                  * yii\filters\auth\HttpHeaderAuth::class,
                  */
-                // HttpBasicAuth::class,
-                // HttpBearerAuth::class,
+//                 HttpBasicAuth::class,
+//                 HttpBearerAuth::class,
                 HttpHeaderAuth::class,
                 [
                     'class' => QueryParamAuth::class,
                     'tokenParam' => 'access-token',
                 ],
             ],
-            // 不进行认证判断方法
+//             不进行认证判断方法
             'optional' => $this->authOptional,
         ];
 
@@ -120,7 +130,7 @@ class ActiveController extends \yii\rest\ActiveController
     protected function verbs()
     {
         return [
-            'index' => ['GET', 'HEAD', 'OPTIONS'],
+            'index' => ['GET','POST', 'HEAD', 'OPTIONS'],
             'view' => ['GET', 'HEAD', 'OPTIONS'],
             'create' => ['POST', 'OPTIONS'],
             'update' => ['PUT', 'PATCH', 'OPTIONS'],
@@ -149,6 +159,8 @@ class ActiveController extends \yii\rest\ActiveController
         // 每页数量
         $this->pageSize = Yii::$app->request->get('per-page', 10);
         $this->pageSize > 50 && $this->pageSize = 50;
+
+        $this->pageParam = ArrayHelper::merge(Yii::$app->request->get(),Yii::$app->request->post());
 
         return true;
     }
