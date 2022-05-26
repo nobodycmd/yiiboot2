@@ -15,6 +15,9 @@ return [
         'common\components\Init', // 加载默认的配置
     ],
     'components' => [
+        'mutex' => [
+            'class' => 'yii\mutex\MysqlMutex',
+        ],
         /** ------ 缓存 ------ **/
         'cache' => [
             'class' => 'yii\caching\FileCache',
