@@ -3,6 +3,7 @@
 namespace common\models\member;
 
 use common\helpers\StringHelper;
+use common\helpers\TreeHelper;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\db\ActiveQuery;
@@ -48,6 +49,7 @@ use common\traits\Tree;
  * @property int $status 状态[-1:删除;0:禁用;1启用]
  * @property string $created_at 创建时间
  * @property string $updated_at 修改时间
+ * @property int $is_fake
  */
 class Member extends User
 {
@@ -85,7 +87,7 @@ class Member extends User
             [['username'], 'unique', 'filter' => function (ActiveQuery $query) {
                 return $query->andWhere(['>=', 'status', StatusEnum::DISABLED]);
             }, 'on' => ['backendCreate']],
-            [['id', 'current_level', 'level', 'merchant_id', 'type', 'gender','visit_count', 'role', 'last_time', 'province_id', 'city_id', 'area_id', 'pid', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'current_level', 'level', 'merchant_id', 'type', 'gender','visit_count', 'role', 'last_time', 'province_id', 'city_id', 'area_id', 'pid', 'status', 'created_at', 'updated_at','is_fake'], 'integer'],
             [['birthday'], 'safe'],
             [['username', 'qq', 'home_phone', 'mobile'], 'string', 'max' => 20],
             [['password_hash', 'password_reset_token', 'head_portrait'], 'string', 'max' => 150],
@@ -191,6 +193,12 @@ class Member extends User
             $this->last_ip = Yii::$app->request->getUserIP();
             $this->last_time = time();
             $this->auth_key = Yii::$app->security->generateRandomString();
+
+            do{
+                $this->promo_code = strtolower(StringHelper::random(6));
+            }while(Member::findOne([
+                'promo_code' => $this->promo_code
+            ]) == false);
         }
 
         // 处理上下级关系
