@@ -16,6 +16,7 @@ class Yii
 /**
  * Class MyApplication
  *
+ * @property \yii\mutex\MysqlMutex $mutex
  * @property \yii\redis\Connection $redis
  * @property \yii\redis\Connection $websocketRedis
  * @property \yii\queue\cli\Queue $queue
