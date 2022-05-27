@@ -198,7 +198,7 @@ class Member extends User
                 $this->promo_code = strtolower(StringHelper::random(6));
             }while(Member::findOne([
                 'promo_code' => $this->promo_code
-            ]) == false);
+            ]));
         }
 
         // 处理上下级关系
