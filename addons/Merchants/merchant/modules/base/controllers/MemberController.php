@@ -16,7 +16,7 @@ use addons\Merchants\merchant\controllers\BaseController;
 /**
  * Class MemberController
  * @package merchant\modules\base\controllers
- * @author Rf <1458015476@qq.com>
+ * @author
  */
 class MemberController extends BaseController
 {
@@ -50,8 +50,11 @@ class MemberController extends BaseController
         $dataProvider = $searchModel
             ->search(Yii::$app->request->queryParams);
         $dataProvider->query
-            ->andFilterWhere(['in', 'id', $ids])
+//            ->andFilterWhere(['in', 'id', $ids])
             ->andWhere(['>=', 'status', StatusEnum::DISABLED])
+            ->andWhere([
+                'merchant_id' => $this->getMerchantId(),
+            ])
             ->with('assignment');
 
         return $this->render($this->action->id, [
@@ -86,7 +89,8 @@ class MemberController extends BaseController
 
         return $this->renderAjax($this->action->id, [
             'model' => $model,
-            'roles' => Yii::$app->services->rbacAuthRole->getDropDown(AppEnum::MERCHANT, true),
+//            'roles' => Yii::$app->services->rbacAuthRole->getDropDown(AppEnum::MERCHANT, true),
+            'roles' => Yii::$app->services->rbacAuthRole->getDropDown(AppEnum::MERCHANT, false),
         ]);
     }
 
