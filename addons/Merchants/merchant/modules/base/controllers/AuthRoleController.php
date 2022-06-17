@@ -35,7 +35,8 @@ class AuthRoleController extends BaseController
      *
      * @var bool
      */
-    public $sourceAuthChild = true;
+    //public $sourceAuthChild = true;
+    public $sourceAuthChild = false;
 
     /**
      * 渲染视图前缀
