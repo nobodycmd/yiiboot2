@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
@@ -71,6 +72,33 @@ class BaseController extends Controller
         // 记录上一页跳转
         $this->setReferrer($action->id);
 
+
+        $this->pageParam = ArrayHelper::merge(Yii::$app->request->get(),Yii::$app->request->post());
+
         return true;
+    }
+
+    /**
+     * 页面提交参数
+     * get post 一起存储
+     *
+     * @var array
+     */
+    protected $pageParam = [];
+
+    /**
+     * 获取页面参数
+     * @param string $name
+     * @param false $default
+     * @return array|false|mixed
+     */
+    public function getPageParam($name='',$default=false){
+        if($name == false){
+            return $this->pageParam;
+        }
+        if(isset($this->pageParam[$name])){
+            return $this->pageParam[$name];
+        }
+        return $default;
     }
 }
