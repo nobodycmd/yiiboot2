@@ -2,6 +2,7 @@
 
 namespace backend\modules\member\controllers;
 
+use common\helpers\TreeHelper;
 use Yii;
 use common\models\base\SearchModel;
 use common\traits\MerchantCurd;
